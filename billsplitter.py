@@ -4,53 +4,26 @@ Bill Splitter
 Calculates how much each person owes
 after splitting a restaurant bill with tip.
 """
+running_total = 0
 
-def split_bill(num_friends, tip_percent, *item_costs):
-    """
-    Calculate the amount each person pays.
+num_of_friends = 4
 
-    Args:
-        num_friends  (int)   : Number of people splitting the bill
-        tip_percent  (float) : Tip percentage (e.g. 25 for 25%)
-        *item_costs  (float) : Variable number of bill items
+appetizers = 37.89
+main_courses = 57.34
+desserts = 39.39
+drinks = 64.21
 
-    Returns:
-        dict: Breakdown of bill details
-    """
-    subtotal = sum(item_costs)
-    tip_amount = subtotal * (tip_percent / 100)
-    total_with_tip = subtotal + tip_amount
-    per_person = round(total_with_tip / num_friends, 2)
+running_total += appetizers + main_courses + desserts + drinks
+print('Total bill so far:', running_total)
 
-    return {
-        "subtotal": subtotal,
-        "tip_amount": tip_amount,
-        "total": total_with_tip,
-        "per_person": per_person
-    }
+tip = running_total * 0.25
+print('Tip amount:', tip)
 
+running_total += tip
+print('Total with tip:', running_total)
 
-def display_bill(result):
-    """Print a formatted bill summary."""
-    print("=" * 35)
-    print("        BILL SUMMARY")
-    print("=" * 35)
-    print(f"  Subtotal     : ${result['subtotal']:.2f}")
-    print(f"  Tip          : ${result['tip_amount']:.2f}")
-    print(f"  Total        : ${result['total']:.2f}")
-    print("-" * 35)
-    print(f"  Each person  : ${result['per_person']:.2f}")
-    print("=" * 35)
+final_bill = running_total / num_of_friends
+print('Bill per person:', final_bill)
 
-
-# --- Run the bill splitter ---
-if __name__ == "__main__":
-    bill = split_bill(
-        4,       # number of friends
-        25,      # tip percentage
-        37.89,   # appetizers
-        57.34,   # main courses
-        39.39,   # desserts
-        64.21    # drinks
-    )
-    display_bill(bill)
+each_pays = round(final_bill, 2)
+print("Each person pays:", each_pays)

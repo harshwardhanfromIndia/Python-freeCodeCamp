@@ -6,88 +6,51 @@ seat type, show time, membership status, and weekend pricing.
 """
 
 
-def get_service_charge(seat_type):
-    """
-    Return the service charge based on seat type.
+base_price = 15
+age = 21
+seat_type = 'Premium'
+show_time = 'Morning'
 
-    Args:
-        seat_type (str): 'Premium', 'Gold', or 'Standard'
+if age > 17:
+    print('User is eligible to book a ticket')
 
-    Returns:
-        int: Service charge amount
-    """
-    charges = {
-        'Premium': 5,
-        'Gold': 3,
-        'Standard': 1
-    }
-    return charges.get(seat_type, 1)
+if age >= 21:
+    print('User is eligible for Evening shows')
+else:
+    print('User is not eligible for Evening shows')
 
+is_member = True
+is_weekend = False
 
-def calculate_ticket_price(age, seat_type, show_time, is_member, is_weekend):
-    """
-    Calculate the final movie ticket price.
+discount = 0
+if is_member and age >= 21:
+    discount = 3
+    print('User qualifies for membership discount')
+else:
+    print('User does not qualify for membership discount')
+print('Discount:', discount)
 
-    Args:
-        age        (int)  : Age of the user
-        seat_type  (str)  : 'Premium', 'Gold', or 'Standard'
-        show_time  (str)  : 'Morning', 'Afternoon', or 'Evening'
-        is_member  (bool) : Whether the user has a membership
-        is_weekend (bool) : Whether it is a weekend
+extra_charges = 0
+if is_weekend or show_time == 'Evening':
+    extra_charges = 2
+    print('Extra charges will be applied')
+else:
+    print('No extra charges will be applied')
+print('Extra charges:', extra_charges)
 
-    Returns:
-        dict: Breakdown of charges and eligibility info,
-              or a string error message if ineligible
-    """
-    BASE_PRICE = 15
+if age >= 21 or age >= 18 and (show_time != 'Evening' or is_member):
+    print('Ticket booking condition satisfied')
 
-    if age < 18:
-        return "Sorry, you must be at least 18 to book a ticket."
+    service_charges = 0
+    if seat_type == 'Premium':
+        service_charges = 5
+    elif seat_type == 'Gold':
+        service_charges = 3
+    else:
+        service_charges = 1
+    print('Service charges:', service_charges)
 
-    evening_eligible = age >= 21 or is_member
-    if show_time == 'Evening' and not evening_eligible:
-        return "Sorry, you must be 21+ or a member to book Evening shows."
-
-    discount = 3 if (is_member and age >= 21) else 0
-    extra_charges = 2 if (is_weekend or show_time == 'Evening') else 0
-    service_charge = get_service_charge(seat_type)
-    final_price = BASE_PRICE + extra_charges + service_charge - discount
-
-    return {
-        "base_price":     BASE_PRICE,
-        "seat_type":      seat_type,
-        "service_charge": service_charge,
-        "extra_charges":  extra_charges,
-        "discount":       discount,
-        "final_price":    final_price
-    }
-
-
-def display_ticket(result):
-    """Print a formatted ticket price breakdown."""
-    if isinstance(result, str):
-        print(f"\n  {result}\n")
-        return
-
-    print("=" * 40)
-    print("     MOVIE TICKET PRICE BREAKDOWN")
-    print("=" * 40)
-    print(f"  Base price       : ${result['base_price']}")
-    print(f"  Seat ({result['seat_type']:>8})  : +${result['service_charge']}")
-    print(f"  Extra charges    : +${result['extra_charges']}")
-    print(f"  Membership disc. : -${result['discount']}")
-    print("-" * 40)
-    print(f"  Final price      : ${result['final_price']}")
-    print("=" * 40)
-
-
-# --- Run the calculator ---
-if __name__ == "__main__":
-    result = calculate_ticket_price(
-        age=21,
-        seat_type='Premium',
-        show_time='Morning',
-        is_member=True,
-        is_weekend=False
-    )
-    display_ticket(result)
+    final_price = extra_charges + service_charges + base_price - discount
+    print('Final price of ticket:', final_price)
+else:
+    print('Ticket booking failed due to restrictions')
